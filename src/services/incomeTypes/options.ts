@@ -1,6 +1,7 @@
 import { mutationOptions, queryOptions } from '@tanstack/react-query';
 
-import type { LookupItemInput } from '../lookups/schema';
+import type { LookupItemInput } from '#src/services/lookups/schema';
+
 import { incomeTypesClient } from './client';
 
 export const incomeTypesOptions = {

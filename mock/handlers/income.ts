@@ -1,6 +1,6 @@
 import type { IncomeEntry } from '#src/services/income/schema';
 
-import { MOCK_INCOME_TYPES } from './lookups';
+import { MOCK_W2_INCOME_TYPE } from './lookups';
 
 export const MOCK_INCOME: IncomeEntry[] = [
   {
@@ -8,7 +8,7 @@ export const MOCK_INCOME: IncomeEntry[] = [
     date: '2026-08-01',
     description: 'Paycheck',
     amount: 4200,
-    typeId: MOCK_INCOME_TYPES[0].id,
+    typeId: MOCK_W2_INCOME_TYPE.id,
   },
 ];
 

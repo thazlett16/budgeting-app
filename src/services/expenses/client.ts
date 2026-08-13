@@ -1,6 +1,7 @@
 import type { InferInput } from 'valibot';
 
-import { callTauriCommand } from '../shared/tauriCommand';
+import { callTauriCommand } from '#src/services/shared/tauri-command';
+
 import { expensesContract } from './contract';
 
 export const expensesClient = {

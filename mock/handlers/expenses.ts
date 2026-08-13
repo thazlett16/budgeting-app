@@ -1,6 +1,6 @@
 import type { ExpenseEntry } from '#src/services/expenses/schema';
 
-import { MOCK_EXPENSE_CATEGORIES } from './lookups';
+import { MOCK_GROCERIES_CATEGORY, MOCK_HOUSING_CATEGORY } from './lookups';
 
 export const MOCK_EXPENSES: ExpenseEntry[] = [
   {
@@ -8,14 +8,14 @@ export const MOCK_EXPENSES: ExpenseEntry[] = [
     date: '2026-08-01',
     description: 'Rent',
     amount: 1800,
-    categoryId: MOCK_EXPENSE_CATEGORIES[0].id,
+    categoryId: MOCK_HOUSING_CATEGORY.id,
   },
   {
     id: 'dddddddd-2222-4222-8222-222222222222',
     date: '2026-08-03',
     description: 'Groceries',
     amount: 120.5,
-    categoryId: MOCK_EXPENSE_CATEGORIES[1].id,
+    categoryId: MOCK_GROCERIES_CATEGORY.id,
   },
 ];
 

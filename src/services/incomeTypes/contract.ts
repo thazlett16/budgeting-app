@@ -1,6 +1,6 @@
 import * as v from 'valibot';
 
-import { LookupItemInputSchema, LookupItemListSchema, LookupItemSchema } from '../lookups/schema';
+import { LookupItemInputSchema, LookupItemListSchema, LookupItemSchema } from '#src/services/lookups/schema';
 
 export const incomeTypesContract = {
   listIncomeTypes: {

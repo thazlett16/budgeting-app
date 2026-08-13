@@ -1,6 +1,13 @@
+import type { InvokeArgs } from '@tauri-apps/api/core';
 import { clearMocks, mockIPC } from '@tauri-apps/api/mocks';
 
 import { handlers } from './handlers';
+
+function isRecordArgs(args: InvokeArgs | undefined): args is Record<string, unknown> | undefined {
+  return (
+    args === undefined || (!Array.isArray(args) && !(args instanceof ArrayBuffer) && !(args instanceof Uint8Array))
+  );
+}
 
 /**
  * Stands in for the Rust backend in tests: routes every `invoke()` call
@@ -16,7 +23,11 @@ export function installTauriIpcMocks(): void {
       throw new Error(`Unhandled Tauri command in mocks: ${command}`);
     }
 
-    return handler(args as Record<string, unknown> | undefined);
+    if (!isRecordArgs(args)) {
+      throw new Error(`Unexpected non-object payload for command: ${command}`);
+    }
+
+    return handler(args);
   });
 }
 
