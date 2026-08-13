@@ -14,3 +14,16 @@ target
 **/mutants.out*/
 
 .idea/
+
+# Node / pnpm
+node_modules/
+dist/
+.vite-hooks/
+coverage/
+
+# TanStack Router
+src/route-tree.gen.ts
+
+# Tauri app data seen when running `pnpm tauri:dev` against a local profile
+src-tauri/gen/
+
