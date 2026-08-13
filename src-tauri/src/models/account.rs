@@ -21,3 +21,12 @@ pub struct Account {
     pub archived: bool,
     pub sort_order: i64,
 }
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct AccountInput {
+    pub name: String,
+    pub category: AccountCategory,
+    pub archived: bool,
+    pub sort_order: i64,
+}

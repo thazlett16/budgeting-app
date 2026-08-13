@@ -40,6 +40,7 @@ before Phase 1 of the backend plan if there's a different preference.
 
 Not scoped for v1, but since Tauri v2 was chosen specifically to keep mobile
 open:
+
 - `pnpm tauri android init` / `pnpm tauri ios init` when that phase starts.
 - Mobile will need its own pass on responsive layout (the dashboard's
   multi-chart, multi-table layout is designed assuming a desktop-width

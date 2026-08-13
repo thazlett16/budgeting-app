@@ -40,6 +40,9 @@ catalog:
   '@vitest/browser-playwright': 4.1.10
   '@vitest/coverage-istanbul': 4.1.10
   '@vitest/ui': 4.1.10
+  eslint-plugin-react-hooks-extra: 2.13.0
+  eslint-plugin-react-naming-convention: 2.13.0
+  eslint-plugin-react-web-api: 2.13.0
   lucide-react: 1.31.0
   playwright: 1.62.1
   react: 19.2.8

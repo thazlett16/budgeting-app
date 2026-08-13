@@ -23,26 +23,26 @@ manual "copy the last column over" for new years).
 
 ## 2. Core architecture decisions
 
-| Decision | Choice | Why |
-|---|---|---|
-| Framework | Tauri v2 | v1 has no mobile support; v2 targets desktop + iOS/Android from one codebase |
-| Frontend | React + Vite + TypeScript | Standard, fast dev loop, matches existing skillset |
-| Package manager | pnpm | User preference |
-| Styling | Tailwind CSS | Per original request |
-| Component primitives | React Aria Components, selectively shared with Tim's existing [[react-aria-component-library]] | Reuse input/dropdown primitives; build app-specific composite components (tables, cards, charts wrappers) fresh in this app |
-| State/data layer | TanStack Query (server-state cache over Tauri commands) + TanStack Store (small bits of local UI/app state) | Matches the full TanStack adoption requested |
-| Routing | TanStack Router | Requested explicitly |
-| Tables | TanStack Table (+ TanStack Virtual for long transaction logs) | Requested explicitly |
-| Forms | TanStack Form | Requested explicitly |
-| Charts | TanStack Charts (`@tanstack/react-charts`) | Requested explicitly |
-| Rate limiting/debouncing | TanStack Pacer | For autosave-on-type / search filtering |
-| Keyboard shortcuts | TanStack Hotkeys | For power-user data entry (e.g. quick-add expense) |
-| Data storage | CSV files, read/written entirely by the **Rust backend** | Per decision below |
-| Validation | Valibot, on the **frontend**, at two boundaries (see Data Model doc) | Per decision below |
-| Data location | Tauri's app-data directory (`app_data_dir()`), not a user-chosen folder | Single-device only for v1; no sync |
-| Export formats | CSV, XLSX, JSON (full backup), PDF (summary report) — all generated **in Rust** | Per decision below |
-| Packaging | Native Arch build via `cargo tauri build`, standard Vite/pnpm/Node toolchain | No Flatpak packaging needed |
-| Dashboard default view | Rolling trailing-12-months, filterable to any custom range | Not locked to Excel's calendar-year grid anymore |
+| Decision                 | Choice                                                                                                      | Why                                                                                                                         |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Framework                | Tauri v2                                                                                                    | v1 has no mobile support; v2 targets desktop + iOS/Android from one codebase                                                |
+| Frontend                 | React + Vite + TypeScript                                                                                   | Standard, fast dev loop, matches existing skillset                                                                          |
+| Package manager          | pnpm                                                                                                        | User preference                                                                                                             |
+| Styling                  | Tailwind CSS                                                                                                | Per original request                                                                                                        |
+| Component primitives     | React Aria Components, selectively shared with Tim's existing [[react-aria-component-library]]              | Reuse input/dropdown primitives; build app-specific composite components (tables, cards, charts wrappers) fresh in this app |
+| State/data layer         | TanStack Query (server-state cache over Tauri commands) + TanStack Store (small bits of local UI/app state) | Matches the full TanStack adoption requested                                                                                |
+| Routing                  | TanStack Router                                                                                             | Requested explicitly                                                                                                        |
+| Tables                   | TanStack Table (+ TanStack Virtual for long transaction logs)                                               | Requested explicitly                                                                                                        |
+| Forms                    | TanStack Form                                                                                               | Requested explicitly                                                                                                        |
+| Charts                   | TanStack Charts (`@tanstack/react-charts`)                                                                  | Requested explicitly                                                                                                        |
+| Rate limiting/debouncing | TanStack Pacer                                                                                              | For autosave-on-type / search filtering                                                                                     |
+| Keyboard shortcuts       | TanStack Hotkeys                                                                                            | For power-user data entry (e.g. quick-add expense)                                                                          |
+| Data storage             | CSV files, read/written entirely by the **Rust backend**                                                    | Per decision below                                                                                                          |
+| Validation               | Valibot, on the **frontend**, at two boundaries (see Data Model doc)                                        | Per decision below                                                                                                          |
+| Data location            | Tauri's app-data directory (`app_data_dir()`), not a user-chosen folder                                     | Single-device only for v1; no sync                                                                                          |
+| Export formats           | CSV, XLSX, JSON (full backup), PDF (summary report) — all generated **in Rust**                             | Per decision below                                                                                                          |
+| Packaging                | Native Arch build via `cargo tauri build`, standard Vite/pnpm/Node toolchain                                | No Flatpak packaging needed                                                                                                 |
+| Dashboard default view   | Rolling trailing-12-months, filterable to any custom range                                                  | Not locked to Excel's calendar-year grid anymore                                                                            |
 
 ## 3. Data model shift from Excel → app (important)
 

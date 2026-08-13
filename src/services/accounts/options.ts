@@ -10,26 +10,28 @@ export const accountsOptions = {
   listAccountsQueryOptions: () =>
     queryOptions({
       queryKey: accountsOptions.listAccounts(),
-      queryFn: () => accountsClient.listAccounts(),
+      queryFn: async () => await accountsClient.listAccounts(),
     }),
 
   createAccountMutationOptions: mutationOptions({
-    mutationFn: (input: AccountInput) => accountsClient.createAccount(input),
+    mutationFn: async (input: AccountInput) => await accountsClient.createAccount(input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
       await client.invalidateQueries({ queryKey: accountsOptions.serviceEntity() });
     },
   }),
 
   updateAccountMutationOptions: mutationOptions({
-    mutationFn: ({ id, input }: { id: string; input: AccountInput }) =>
-      accountsClient.updateAccount(id, input),
+    mutationFn: async ({ id, input }: { id: string; input: AccountInput }) =>
+      await accountsClient.updateAccount(id, input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
       await client.invalidateQueries({ queryKey: accountsOptions.serviceEntity() });
     },
   }),
 
   archiveAccountMutationOptions: mutationOptions({
-    mutationFn: ({ id }: { id: string }) => accountsClient.archiveAccount(id),
+    mutationFn: async ({ id }: { id: string }) => {
+      await accountsClient.archiveAccount(id);
+    },
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
       await client.invalidateQueries({ queryKey: accountsOptions.serviceEntity() });
     },

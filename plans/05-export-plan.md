@@ -10,6 +10,7 @@ gets back either raw bytes or a file path, and uses Tauri's save-file dialog
 The simplest case — this is close to a direct copy of the underlying data files,
 but should go through the same typed models rather than literally copying the
 raw file, so that:
+
 - Archived accounts/categories can optionally be excluded or included (user
   choice at export time).
 - A date-range filter can be applied (export just this year's expenses, e.g.)

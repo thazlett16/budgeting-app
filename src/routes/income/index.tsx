@@ -5,5 +5,5 @@ export const Route = createFileRoute('/income/')({
 });
 
 function IncomePage() {
-  return <div>Income</div>;
+  return <div>{'Income'}</div>;
 }

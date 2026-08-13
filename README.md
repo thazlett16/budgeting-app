@@ -35,6 +35,10 @@ storage. See `plans/` for the full design docs — start with
 - No global state store yet (no TanStack Store) — holding off until a
   concrete cross-page state need shows up; local component state / route
   search params first.
+- `expenseCategories` and `incomeTypes` share a `LookupItem` shape
+  (`src/services/lookups/schema.ts`) but still get their own
+  contract/client/options so components call domain-named functions, not a
+  generic one.
 
 ## Getting started
 
@@ -53,9 +57,16 @@ pnpm tauri:dev
   swap for real icons via `pnpm tauri icon <path-to-1024-png>` before shipping.
 - Rust crate versions in `Cargo.toml` are unpinned majors, not checked against
   crates.io yet (see `plans/02-backend-plan.md` §1) — validate before Phase 1.
-- Only the `accounts` domain has a Rust command stub (`list_accounts`) and a
-  full frontend service (`src/services/accounts/`), enough to prove the
-  `invoke()` round-trip end-to-end per `plans/03-frontend-architecture.md`
-  build order step 1. Everything else in `02-backend-plan.md` (CRUD,
-  rollups, export) and the other domains (lookups, investments, expenses,
-  income) still need their own `commands/*.rs` + `src/services/*/` pair.
+- All six domains (accounts, expense categories, income types, investments,
+  expenses, income) have full CRUD Rust commands (`src-tauri/src/commands/`)
+  and matching frontend services (`src/services/`), per
+  `02-backend-plan.md` Phase 2. Lookup domains soft-delete (archive);
+  transaction domains (investments/expenses/income) hard-delete.
+  `expense_categories.csv` / `income_types.csv` are seeded with the preset
+  values from `01-data-model-and-csv-schema.md` §3 on first launch.
+- Phase 3 (rollup/summary commands — gains, net worth, spending/income
+  totals, dashboard insights) and Phase 4 (export) from `02-backend-plan.md`
+  are still to build — nothing derives gain$/gain% or aggregates yet.
+- No UI beyond route stubs — every page still just renders a placeholder
+  `<div>`; components/tables/forms/charts are all still empty per
+  `plans/03-frontend-architecture.md` build order (Settings pages next).

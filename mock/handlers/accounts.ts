@@ -1,6 +1,6 @@
 import type { Account } from '#src/services/accounts/schema';
 
-export const MOCK_ACCOUNTS: Array<Account> = [
+export const MOCK_ACCOUNTS: Account[] = [
   {
     id: '11111111-1111-4111-8111-111111111111',
     name: 'Roth IRA',

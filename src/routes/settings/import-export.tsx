@@ -5,5 +5,5 @@ export const Route = createFileRoute('/settings/import-export')({
 });
 
 function SettingsImportExportPage() {
-  return <div>Import / Export</div>;
+  return <div>{'Import / Export'}</div>;
 }

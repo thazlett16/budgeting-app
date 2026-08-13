@@ -1,13 +1,6 @@
 import * as v from 'valibot';
 
-export const AccountCategorySchema = v.picklist([
-  'hsa',
-  '401k',
-  'roth_ira',
-  'hysa',
-  'checking',
-  'other',
-]);
+export const AccountCategorySchema = v.picklist(['hsa', '401k', 'roth_ira', 'hysa', 'checking', 'other']);
 
 export const AccountSchema = v.object({
   id: v.pipe(v.string(), v.uuid()),

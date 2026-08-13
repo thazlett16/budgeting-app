@@ -1,11 +1,10 @@
 import { TanStackDevtools } from '@tanstack/react-devtools';
 import { formDevtoolsPlugin } from '@tanstack/react-form-devtools';
 import { PacerDevtoolsPanel } from '@tanstack/react-pacer-devtools';
+import type { QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';
 import { Outlet, createRootRouteWithContext } from '@tanstack/react-router';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
-
-import type { QueryClient } from '@tanstack/react-query';
 
 interface RouterContext {
   queryClient: QueryClient;

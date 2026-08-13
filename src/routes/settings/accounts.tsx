@@ -5,5 +5,5 @@ export const Route = createFileRoute('/settings/accounts')({
 });
 
 function SettingsAccountsPage() {
-  return <div>Accounts</div>;
+  return <div>{'Accounts'}</div>;
 }

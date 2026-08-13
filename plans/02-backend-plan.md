@@ -14,7 +14,7 @@ Tauri commands.
 - `printpdf` (or `genpdf` if `printpdf`'s API proves too low-level for a simple
   summary report) — PDF export
 - `tauri-plugin-fs` — only if the frontend ever needs direct file dialogs (e.g.
-  "choose where to save the exported file"); all *data* CSVs stay backend-only
+  "choose where to save the exported file"); all _data_ CSVs stay backend-only
 
 ## 2. Module layout
 
@@ -48,6 +48,7 @@ src-tauri/
 ## 3. Build order
 
 ### Phase 1 — storage foundation
+
 1. Set up `paths.rs`: resolve the app-data directory, define constants for each
    CSV filename, ensure the directory (and default/seed CSVs) exist on first launch.
 2. Build `csv_store.rs`: a generic `read_all<T: DeserializeOwned>(path) -> Result<Vec<T>, AppError>`
@@ -66,8 +67,10 @@ src-tauri/
    `accounts.csv` empty — accounts are personal, no sensible default to seed.
 
 ### Phase 2 — CRUD commands
+
 For each of accounts / expense_categories / income_types / investments / expenses
 / income, implement:
+
 - `list_x() -> Vec<X>`
 - `create_x(input: XInput) -> X` (generates `id`, appends, rewrites file)
 - `update_x(id: String, input: XInput) -> X`
@@ -78,6 +81,7 @@ For each of accounts / expense_categories / income_types / investments / expense
 Register all of these in `main.rs`'s `tauri::generate_handler![]` list.
 
 ### Phase 3 — rollup/summary commands
+
 This is the part that replaces the Excel formulas. Build these as dedicated
 commands rather than making the frontend re-derive everything from raw lists —
 keeps the "what does a gain mean" logic in one place.
@@ -104,6 +108,7 @@ lets the frontend implement "rolling trailing 12 months" vs "custom range" vs
 "calendar year" without the backend caring which UI mode produced the range.
 
 ### Phase 4 — export commands
+
 See `05-export-plan.md` for detail; stub these last since they depend on the
 rollup logic from Phase 3 for the PDF summary report specifically.
 
@@ -111,6 +116,7 @@ rollup logic from Phase 3 for the PDF summary report specifically.
 
 Given there's no existing test strategy decided (see open questions in the
 overview doc), prioritize `#[test]`s for:
+
 1. CSV round-trip (write then read gives back identical structs).
 2. Gain calculation edge cases: first-ever entry for an account (no prior row →
    gain should be `None`, not `0`), a month with `contribution` but no balance

@@ -1,14 +1,13 @@
-import react from '@vitejs/plugin-react';
-import { defineConfig, loadEnv } from 'vite-plus';
+import { defineConfig } from 'vite-plus';
 import { playwright } from 'vite-plus/test/browser-playwright';
+import tailwindcss from '@tailwindcss/vite';
+import { tanstackRouter } from '@tanstack/router-plugin/vite';
+import react from '@vitejs/plugin-react';
 
 import { devtools } from '@tanstack/devtools-vite';
-import { tanstackRouter } from '@tanstack/router-plugin/vite';
 
 import { oxfmtConfig } from '@thaz/oxfmt-config';
-import { nativeConfig, jsPluginConfig, routesFileConfig } from '@thaz/oxlint-config';
-
-import tailwindcss from '@tailwindcss/vite';
+import { nativeConfig, routesFileConfig } from '@thaz/oxlint-config';
 
 // Tauri expects a fixed dev server port and needs to ignore src-tauri in its
 // file watcher; see https://v2.tauri.app/start/frontend/vite/
@@ -65,10 +64,10 @@ export default defineConfig({
     host: host ?? false,
     ws: host
       ? {
-        protocol: 'ws',
-        host,
-        port: 1421,
-      }
+          protocol: 'ws',
+          host,
+          port: 1421,
+        }
       : false,
     watch: {
       ignored: ['**/src-tauri/**'],
@@ -82,10 +81,10 @@ export default defineConfig({
       typeCheck: true,
     },
     ignorePatterns: ['src/route-tree.gen.ts'],
-    jsPlugins: jsPluginConfig.jsPlugins,
-    rules: {
-      ...jsPluginConfig.rules,
-    },
+    // jsPlugins: jsPluginConfig.jsPlugins,
+    // rules: {
+    //   ...jsPluginConfig.rules,
+    // },
   },
   test: {
     setupFiles: ['test/setup.ts'],

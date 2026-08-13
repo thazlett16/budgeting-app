@@ -3,12 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "description": "Budget & Net Worth Tracker — Tauri desktop/mobile app",
+  "keywords": [
+    "finances",
+    "poc",
+    "tauri"
+  ],
+  "homepage": "https://github.com/thazlett16/budgeting-app#readme",
+  "bugs": {
+    "url": "https://github.com/thazlett16/budgeting-app/issues"
+  },
+  "license": "MIT",
   "author": "Tim Hazlett",
-  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thazlett16/budgeting-app.git"
+  },
   "type": "module",
   "scripts": {
-    "dev": "vp dev",
-    "build": "vp pack",
     "playwright:setup": "vpx playwright install chromium chromium-headless-shell",
     "taze": "vpx taze@latest -Ilwr --maturity-period 3",
     "taze:major": "vpx taze@latest major -Ilwr --maturity-period 3",
@@ -69,6 +80,9 @@
     "@vitest/browser-playwright": "catalog:",
     "@vitest/coverage-istanbul": "catalog:",
     "@vitest/ui": "catalog:",
+    "eslint-plugin-react-hooks-extra": "catalog:",
+    "eslint-plugin-react-naming-convention": "catalog:",
+    "eslint-plugin-react-web-api": "catalog:",
     "playwright": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:",

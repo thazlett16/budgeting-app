@@ -5,5 +5,5 @@ export const Route = createFileRoute('/settings/categories')({
 });
 
 function SettingsCategoriesPage() {
-  return <div>Categories</div>;
+  return <div>{'Categories'}</div>;
 }

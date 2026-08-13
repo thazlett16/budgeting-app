@@ -39,20 +39,18 @@ exportable (see `05-export-plan.md`) but not meant for the user to hand-edit.
 
 ### `accounts.csv`
 
-| column | type | notes |
-|---|---|---|
-| `id` | string (uuid) | stable identifier, never reused |
-| `name` | string | display name, editable any time |
-| `category` | string enum | `hsa` \| `401k` \| `roth_ira` \| `hysa` \| `checking` \| `other` — used for optional grouping/filtering in the UI (not required, but cheap to add now) |
-| `archived` | boolean | soft-delete: hide from new-entry dropdowns, keep historical rows intact |
-| `sort_order` | integer | controls dropdown/table ordering |
+| column       | type          | notes                                                                                                                                                  |
+| ------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `id`         | string (uuid) | stable identifier, never reused                                                                                                                        |
+| `name`       | string        | display name, editable any time                                                                                                                        |
+| `category`   | string enum   | `hsa` \| `401k` \| `roth_ira` \| `hysa` \| `checking` \| `other` — used for optional grouping/filtering in the UI (not required, but cheap to add now) |
+| `archived`   | boolean       | soft-delete: hide from new-entry dropdowns, keep historical rows intact                                                                                |
+| `sort_order` | integer       | controls dropdown/table ordering                                                                                                                       |
 
 ```ts
-import * as v from "valibot";
+import * as v from 'valibot';
 
-export const AccountCategory = v.picklist([
-  "hsa", "401k", "roth_ira", "hysa", "checking", "other",
-]);
+export const AccountCategory = v.picklist(['hsa', '401k', 'roth_ira', 'hysa', 'checking', 'other']);
 
 export const AccountSchema = v.object({
   id: v.pipe(v.string(), v.uuid()),
@@ -69,12 +67,12 @@ export type Account = v.InferOutput<typeof AccountSchema>;
 
 Both share the same shape — a generic lookup:
 
-| column | type | notes |
-|---|---|---|
-| `id` | string (uuid) | |
-| `name` | string | |
-| `archived` | boolean | |
-| `sort_order` | integer | |
+| column       | type          | notes |
+| ------------ | ------------- | ----- |
+| `id`         | string (uuid) |       |
+| `name`       | string        |       |
+| `archived`   | boolean       |       |
+| `sort_order` | integer       |       |
 
 ```ts
 export const LookupItemSchema = v.object({
@@ -99,13 +97,13 @@ Preset seed values (ship these as the default CSVs on first launch):
 One row per account balance snapshot. No more separate "starting balance" table —
 the earliest row per account is implicitly the starting point.
 
-| column | type | notes |
-|---|---|---|
-| `id` | string (uuid) | |
-| `date` | string (ISO `YYYY-MM-DD`) | conventionally the 1st of the month, but not enforced — see note below |
-| `account_id` | string (uuid) | FK into `accounts.csv` |
-| `balance` | number | the observed balance that month |
-| `contribution` | number | money added (positive) or withdrawn (negative) since the prior snapshot; `0` if none |
+| column         | type                      | notes                                                                                |
+| -------------- | ------------------------- | ------------------------------------------------------------------------------------ |
+| `id`           | string (uuid)             |                                                                                      |
+| `date`         | string (ISO `YYYY-MM-DD`) | conventionally the 1st of the month, but not enforced — see note below               |
+| `account_id`   | string (uuid)             | FK into `accounts.csv`                                                               |
+| `balance`      | number                    | the observed balance that month                                                      |
+| `contribution` | number                    | money added (positive) or withdrawn (negative) since the prior snapshot; `0` if none |
 
 ```ts
 export const InvestmentEntrySchema = v.object({
@@ -135,13 +133,13 @@ schema itself.
 
 ### `expenses.csv`
 
-| column | type | notes |
-|---|---|---|
-| `id` | string (uuid) | |
-| `date` | string (ISO `YYYY-MM-DD`) | actual transaction date, not month-truncated |
-| `description` | string | |
-| `amount` | number | always positive; sign is implied by which file it's in |
-| `category_id` | string (uuid) | FK into `expense_categories.csv` |
+| column        | type                      | notes                                                  |
+| ------------- | ------------------------- | ------------------------------------------------------ |
+| `id`          | string (uuid)             |                                                        |
+| `date`        | string (ISO `YYYY-MM-DD`) | actual transaction date, not month-truncated           |
+| `description` | string                    |                                                        |
+| `amount`      | number                    | always positive; sign is implied by which file it's in |
+| `category_id` | string (uuid)             | FK into `expense_categories.csv`                       |
 
 ```ts
 export const ExpenseEntrySchema = v.object({
