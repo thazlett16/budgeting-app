@@ -12,6 +12,7 @@ import * as m from '#src/paraglide/messages';
 import { accountsOptions } from '#src/services/accounts/options';
 
 import { accountFormOptions } from './-accounts/account-form-options';
+import { ArchiveToggleButton } from './-shared/archive-toggle-button';
 
 export const Route = createFileRoute('/settings/accounts')({
   component: SettingsAccountsPage,
@@ -21,6 +22,7 @@ function SettingsAccountsPage() {
   const accountsQuery = useQuery(accountsOptions.listAccountsQueryOptions());
   const createAccount = useMutation(accountsOptions.createAccountMutationOptions);
   const archiveAccount = useMutation(accountsOptions.archiveAccountMutationOptions);
+  const unarchiveAccount = useMutation(accountsOptions.unarchiveAccountMutationOptions);
   const [showArchived, setShowArchived] = useState(false);
 
   const form = useForm({
@@ -148,17 +150,17 @@ function SettingsAccountsPage() {
                 <td className="py-2">{account.name}</td>
                 <td className="text-muted-foreground py-2">{account.category}</td>
                 <td className="py-2 text-right">
-                  {!account.archived && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onPress={() => {
-                        archiveAccount.mutate({ id: account.id });
-                      }}
-                    >
-                      {m.settings_accounts_archive()}
-                    </Button>
-                  )}
+                  <ArchiveToggleButton
+                    archived={account.archived}
+                    archiveLabel={m.settings_accounts_archive()}
+                    unarchiveLabel={m.settings_accounts_unarchive()}
+                    onArchive={() => {
+                      archiveAccount.mutate({ id: account.id });
+                    }}
+                    onUnarchive={() => {
+                      unarchiveAccount.mutate({ id: account.id });
+                    }}
+                  />
                 </td>
               </tr>
             ))}

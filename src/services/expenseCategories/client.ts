@@ -16,4 +16,7 @@ export const expenseCategoriesClient = {
   archiveExpenseCategory: async (id: string) => {
     await callTauriCommand(expenseCategoriesContract.archiveExpenseCategory, { id });
   },
+  unarchiveExpenseCategory: async (id: string) => {
+    await callTauriCommand(expenseCategoriesContract.unarchiveExpenseCategory, { id });
+  },
 };

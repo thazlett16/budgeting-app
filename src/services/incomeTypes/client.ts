@@ -13,4 +13,7 @@ export const incomeTypesClient = {
   archiveIncomeType: async (id: string) => {
     await callTauriCommand(incomeTypesContract.archiveIncomeType, { id });
   },
+  unarchiveIncomeType: async (id: string) => {
+    await callTauriCommand(incomeTypesContract.unarchiveIncomeType, { id });
+  },
 };

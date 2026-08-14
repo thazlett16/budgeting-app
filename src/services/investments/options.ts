@@ -19,7 +19,7 @@ export const investmentsOptions = {
     mutationFn: async (input: InferInput<typeof InvestmentEntryInputSchema>) =>
       await investmentsClient.createInvestmentEntry(input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
-      await client.invalidateQueries({ queryKey: investmentsOptions.serviceEntity() });
+      await client.invalidateQueries();
     },
   }),
 
@@ -27,7 +27,7 @@ export const investmentsOptions = {
     mutationFn: async ({ id, ...input }: InferInput<typeof InvestmentEntrySchema>) =>
       await investmentsClient.updateInvestmentEntry(id, input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
-      await client.invalidateQueries({ queryKey: investmentsOptions.serviceEntity() });
+      await client.invalidateQueries();
     },
   }),
 
@@ -36,7 +36,7 @@ export const investmentsOptions = {
       await investmentsClient.deleteInvestmentEntry(id);
     },
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
-      await client.invalidateQueries({ queryKey: investmentsOptions.serviceEntity() });
+      await client.invalidateQueries();
     },
   }),
 };

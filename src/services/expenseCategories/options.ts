@@ -20,7 +20,7 @@ export const expenseCategoriesOptions = {
     mutationFn: async (input: InferInput<typeof LookupItemInputSchema>) =>
       await expenseCategoriesClient.createExpenseCategory(input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
-      await client.invalidateQueries({ queryKey: expenseCategoriesOptions.serviceEntity() });
+      await client.invalidateQueries();
     },
   }),
 
@@ -28,7 +28,7 @@ export const expenseCategoriesOptions = {
     mutationFn: async ({ id, ...input }: InferInput<typeof LookupItemSchema>) =>
       await expenseCategoriesClient.updateExpenseCategory(id, input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
-      await client.invalidateQueries({ queryKey: expenseCategoriesOptions.serviceEntity() });
+      await client.invalidateQueries();
     },
   }),
 
@@ -37,7 +37,16 @@ export const expenseCategoriesOptions = {
       await expenseCategoriesClient.archiveExpenseCategory(id);
     },
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
-      await client.invalidateQueries({ queryKey: expenseCategoriesOptions.serviceEntity() });
+      await client.invalidateQueries();
+    },
+  }),
+
+  unarchiveExpenseCategoryMutationOptions: mutationOptions({
+    mutationFn: async ({ id }: { id: string }) => {
+      await expenseCategoriesClient.unarchiveExpenseCategory(id);
+    },
+    onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
+      await client.invalidateQueries();
     },
   }),
 };

@@ -21,6 +21,6 @@ export const incomeContract = {
   deleteIncome: {
     command: 'delete_income',
     input: v.object({ id: v.pipe(v.string(), v.uuid()) }),
-    output: v.undefined(),
+    output: v.null(),
   },
 } as const;

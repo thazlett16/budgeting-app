@@ -9,6 +9,7 @@ import * as m from '#src/paraglide/messages';
 import { expenseCategoriesOptions } from '#src/services/expenseCategories/options';
 
 import { lookupItemFormOptions } from './-lookup-items/lookup-item-form-options';
+import { ArchiveToggleButton } from './-shared/archive-toggle-button';
 
 export const Route = createFileRoute('/settings/categories')({
   component: SettingsCategoriesPage,
@@ -18,6 +19,7 @@ function SettingsCategoriesPage() {
   const categoriesQuery = useQuery(expenseCategoriesOptions.listExpenseCategoriesQueryOptions());
   const createCategory = useMutation(expenseCategoriesOptions.createExpenseCategoryMutationOptions);
   const archiveCategory = useMutation(expenseCategoriesOptions.archiveExpenseCategoryMutationOptions);
+  const unarchiveCategory = useMutation(expenseCategoriesOptions.unarchiveExpenseCategoryMutationOptions);
   const [showArchived, setShowArchived] = useState(false);
 
   const form = useForm({
@@ -116,17 +118,17 @@ function SettingsCategoriesPage() {
               >
                 <td className="py-2">{category.name}</td>
                 <td className="py-2 text-right">
-                  {!category.archived && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onPress={() => {
-                        archiveCategory.mutate({ id: category.id });
-                      }}
-                    >
-                      {m.settings_categories_archive()}
-                    </Button>
-                  )}
+                  <ArchiveToggleButton
+                    archived={category.archived}
+                    archiveLabel={m.settings_categories_archive()}
+                    unarchiveLabel={m.settings_categories_unarchive()}
+                    onArchive={() => {
+                      archiveCategory.mutate({ id: category.id });
+                    }}
+                    onUnarchive={() => {
+                      unarchiveCategory.mutate({ id: category.id });
+                    }}
+                  />
                 </td>
               </tr>
             ))}

@@ -13,4 +13,7 @@ export const accountsClient = {
   archiveAccount: async (id: string) => {
     await callTauriCommand(accountsContract.archiveAccount, { id });
   },
+  unarchiveAccount: async (id: string) => {
+    await callTauriCommand(accountsContract.unarchiveAccount, { id });
+  },
 };

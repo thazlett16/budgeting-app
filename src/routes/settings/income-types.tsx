@@ -9,6 +9,7 @@ import * as m from '#src/paraglide/messages';
 import { incomeTypesOptions } from '#src/services/incomeTypes/options';
 
 import { lookupItemFormOptions } from './-lookup-items/lookup-item-form-options';
+import { ArchiveToggleButton } from './-shared/archive-toggle-button';
 
 export const Route = createFileRoute('/settings/income-types')({
   component: SettingsIncomeTypesPage,
@@ -18,6 +19,7 @@ function SettingsIncomeTypesPage() {
   const incomeTypesQuery = useQuery(incomeTypesOptions.listIncomeTypesQueryOptions());
   const createIncomeType = useMutation(incomeTypesOptions.createIncomeTypeMutationOptions);
   const archiveIncomeType = useMutation(incomeTypesOptions.archiveIncomeTypeMutationOptions);
+  const unarchiveIncomeType = useMutation(incomeTypesOptions.unarchiveIncomeTypeMutationOptions);
   const [showArchived, setShowArchived] = useState(false);
 
   const form = useForm({
@@ -116,17 +118,17 @@ function SettingsIncomeTypesPage() {
               >
                 <td className="py-2">{incomeType.name}</td>
                 <td className="py-2 text-right">
-                  {!incomeType.archived && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onPress={() => {
-                        archiveIncomeType.mutate({ id: incomeType.id });
-                      }}
-                    >
-                      {m.settings_income_types_archive()}
-                    </Button>
-                  )}
+                  <ArchiveToggleButton
+                    archived={incomeType.archived}
+                    archiveLabel={m.settings_income_types_archive()}
+                    unarchiveLabel={m.settings_income_types_unarchive()}
+                    onArchive={() => {
+                      archiveIncomeType.mutate({ id: incomeType.id });
+                    }}
+                    onUnarchive={() => {
+                      unarchiveIncomeType.mutate({ id: incomeType.id });
+                    }}
+                  />
                 </td>
               </tr>
             ))}

@@ -18,7 +18,7 @@ export const accountsOptions = {
   createAccountMutationOptions: mutationOptions({
     mutationFn: async (input: InferInput<typeof AccountInputSchema>) => await accountsClient.createAccount(input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
-      await client.invalidateQueries({ queryKey: accountsOptions.serviceEntity() });
+      await client.invalidateQueries();
     },
   }),
 
@@ -26,7 +26,7 @@ export const accountsOptions = {
     mutationFn: async ({ id, ...input }: InferInput<typeof AccountSchema>) =>
       await accountsClient.updateAccount(id, input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
-      await client.invalidateQueries({ queryKey: accountsOptions.serviceEntity() });
+      await client.invalidateQueries();
     },
   }),
 
@@ -35,7 +35,16 @@ export const accountsOptions = {
       await accountsClient.archiveAccount(id);
     },
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
-      await client.invalidateQueries({ queryKey: accountsOptions.serviceEntity() });
+      await client.invalidateQueries();
+    },
+  }),
+
+  unarchiveAccountMutationOptions: mutationOptions({
+    mutationFn: async ({ id }: { id: string }) => {
+      await accountsClient.unarchiveAccount(id);
+    },
+    onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
+      await client.invalidateQueries();
     },
   }),
 };

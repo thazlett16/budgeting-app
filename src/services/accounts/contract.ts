@@ -28,6 +28,11 @@ export const accountsContract = {
   archiveAccount: {
     command: 'archive_account',
     input: v.object({ id: v.pipe(v.string(), v.uuid()) }),
-    output: v.undefined(),
+    output: v.null(),
+  },
+  unarchiveAccount: {
+    command: 'unarchive_account',
+    input: v.object({ id: v.pipe(v.string(), v.uuid()) }),
+    output: v.null(),
   },
 } as const;

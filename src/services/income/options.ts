@@ -18,7 +18,7 @@ export const incomeOptions = {
   createIncomeMutationOptions: mutationOptions({
     mutationFn: async (input: InferInput<typeof IncomeEntryInputSchema>) => await incomeClient.createIncome(input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
-      await client.invalidateQueries({ queryKey: incomeOptions.serviceEntity() });
+      await client.invalidateQueries();
     },
   }),
 
@@ -26,7 +26,7 @@ export const incomeOptions = {
     mutationFn: async ({ id, ...input }: InferInput<typeof IncomeEntrySchema>) =>
       await incomeClient.updateIncome(id, input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
-      await client.invalidateQueries({ queryKey: incomeOptions.serviceEntity() });
+      await client.invalidateQueries();
     },
   }),
 
@@ -35,7 +35,7 @@ export const incomeOptions = {
       await incomeClient.deleteIncome(id);
     },
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
-      await client.invalidateQueries({ queryKey: incomeOptions.serviceEntity() });
+      await client.invalidateQueries();
     },
   }),
 };

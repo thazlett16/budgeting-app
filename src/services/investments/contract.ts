@@ -21,6 +21,6 @@ export const investmentsContract = {
   deleteInvestmentEntry: {
     command: 'delete_investment_entry',
     input: v.object({ id: v.pipe(v.string(), v.uuid()) }),
-    output: v.undefined(),
+    output: v.null(),
   },
 } as const;

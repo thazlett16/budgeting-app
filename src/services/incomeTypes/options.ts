@@ -20,7 +20,7 @@ export const incomeTypesOptions = {
     mutationFn: async (input: InferInput<typeof LookupItemInputSchema>) =>
       await incomeTypesClient.createIncomeType(input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
-      await client.invalidateQueries({ queryKey: incomeTypesOptions.serviceEntity() });
+      await client.invalidateQueries();
     },
   }),
 
@@ -28,7 +28,7 @@ export const incomeTypesOptions = {
     mutationFn: async ({ id, ...input }: InferInput<typeof LookupItemSchema>) =>
       await incomeTypesClient.updateIncomeType(id, input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
-      await client.invalidateQueries({ queryKey: incomeTypesOptions.serviceEntity() });
+      await client.invalidateQueries();
     },
   }),
 
@@ -37,7 +37,16 @@ export const incomeTypesOptions = {
       await incomeTypesClient.archiveIncomeType(id);
     },
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
-      await client.invalidateQueries({ queryKey: incomeTypesOptions.serviceEntity() });
+      await client.invalidateQueries();
+    },
+  }),
+
+  unarchiveIncomeTypeMutationOptions: mutationOptions({
+    mutationFn: async ({ id }: { id: string }) => {
+      await incomeTypesClient.unarchiveIncomeType(id);
+    },
+    onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
+      await client.invalidateQueries();
     },
   }),
 };

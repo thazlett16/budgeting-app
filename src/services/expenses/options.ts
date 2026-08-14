@@ -18,7 +18,7 @@ export const expensesOptions = {
   createExpenseMutationOptions: mutationOptions({
     mutationFn: async (input: InferInput<typeof ExpenseEntryInputSchema>) => await expensesClient.createExpense(input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
-      await client.invalidateQueries({ queryKey: expensesOptions.serviceEntity() });
+      await client.invalidateQueries();
     },
   }),
 
@@ -26,7 +26,7 @@ export const expensesOptions = {
     mutationFn: async ({ id, ...input }: InferInput<typeof ExpenseEntrySchema>) =>
       await expensesClient.updateExpense(id, input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
-      await client.invalidateQueries({ queryKey: expensesOptions.serviceEntity() });
+      await client.invalidateQueries();
     },
   }),
 
@@ -35,7 +35,7 @@ export const expensesOptions = {
       await expensesClient.deleteExpense(id);
     },
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
-      await client.invalidateQueries({ queryKey: expensesOptions.serviceEntity() });
+      await client.invalidateQueries();
     },
   }),
 };

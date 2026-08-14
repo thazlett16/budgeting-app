@@ -66,3 +66,19 @@ pub fn archive_account(app: AppHandle, id: String) -> AppResult<()> {
 
     Ok(())
 }
+
+#[tauri::command(rename_all = "snake_case")]
+pub fn unarchive_account(app: AppHandle, id: String) -> AppResult<()> {
+    let mut accounts = list_accounts(app.clone())?;
+
+    let account = accounts
+        .iter_mut()
+        .find(|account| account.id == id)
+        .ok_or_else(|| AppError::NotFound(id.clone()))?;
+
+    account.archived = false;
+
+    csv_store::write_all(paths::data_file(&app, paths::ACCOUNTS_CSV)?, &accounts)?;
+
+    Ok(())
+}

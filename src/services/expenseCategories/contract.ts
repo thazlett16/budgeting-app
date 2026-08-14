@@ -21,6 +21,11 @@ export const expenseCategoriesContract = {
   archiveExpenseCategory: {
     command: 'archive_expense_category',
     input: v.object({ id: v.pipe(v.string(), v.uuid()) }),
-    output: v.undefined(),
+    output: v.null(),
+  },
+  unarchiveExpenseCategory: {
+    command: 'unarchive_expense_category',
+    input: v.object({ id: v.pipe(v.string(), v.uuid()) }),
+    output: v.null(),
   },
 } as const;

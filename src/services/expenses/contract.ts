@@ -21,6 +21,6 @@ export const expensesContract = {
   deleteExpense: {
     command: 'delete_expense',
     input: v.object({ id: v.pipe(v.string(), v.uuid()) }),
-    output: v.undefined(),
+    output: v.null(),
   },
 } as const;
