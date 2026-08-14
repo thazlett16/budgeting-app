@@ -33,6 +33,7 @@
   "dependencies": {
     "@internationalized/date": "catalog:",
     "@js-temporal/polyfill": "catalog:",
+    "@tanstack/charts": "catalog:",
     "@tanstack/pacer": "catalog:",
     "@tanstack/react-charts": "catalog:",
     "@tanstack/react-form": "catalog:",
