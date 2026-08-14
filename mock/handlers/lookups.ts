@@ -1,4 +1,8 @@
-import type { LookupItem } from '#src/services/lookups/schema';
+import type { InferOutput } from 'valibot';
+
+import type { LookupItemSchema } from '#src/services/lookups/schema';
+
+type LookupItem = InferOutput<typeof LookupItemSchema>;
 
 export const MOCK_HOUSING_CATEGORY: LookupItem = {
   id: 'aaaaaaaa-1111-4111-8111-111111111111',

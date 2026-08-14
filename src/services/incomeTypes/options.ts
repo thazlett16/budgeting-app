@@ -1,6 +1,8 @@
 import { mutationOptions, queryOptions } from '@tanstack/react-query';
 
-import type { LookupItemInput } from '#src/services/lookups/schema';
+import type { InferInput } from 'valibot';
+
+import { LookupItemInputSchema, LookupItemSchema } from '#src/services/lookups/schema';
 
 import { incomeTypesClient } from './client';
 
@@ -15,14 +17,15 @@ export const incomeTypesOptions = {
     }),
 
   createIncomeTypeMutationOptions: mutationOptions({
-    mutationFn: async (input: LookupItemInput) => await incomeTypesClient.createIncomeType(input),
+    mutationFn: async (input: InferInput<typeof LookupItemInputSchema>) =>
+      await incomeTypesClient.createIncomeType(input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
       await client.invalidateQueries({ queryKey: incomeTypesOptions.serviceEntity() });
     },
   }),
 
   updateIncomeTypeMutationOptions: mutationOptions({
-    mutationFn: async ({ id, input }: { id: string; input: LookupItemInput }) =>
+    mutationFn: async ({ id, ...input }: InferInput<typeof LookupItemSchema>) =>
       await incomeTypesClient.updateIncomeType(id, input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
       await client.invalidateQueries({ queryKey: incomeTypesOptions.serviceEntity() });

@@ -20,6 +20,7 @@
   },
   "type": "module",
   "scripts": {
+    "intent": "vpx @tanstack/intent@latest",
     "playwright:setup": "vpx playwright install chromium chromium-headless-shell",
     "taze": "vpx taze@latest -Ilwr --maturity-period 3",
     "taze:major": "vpx taze@latest major -Ilwr --maturity-period 3",
@@ -58,6 +59,7 @@
     "valibot": "catalog:"
   },
   "devDependencies": {
+    "@inlang/paraglide-js": "catalog:",
     "@tailwindcss/vite": "catalog:",
     "@tanstack/devtools-vite": "catalog:",
     "@tanstack/eslint-plugin-query": "catalog:",

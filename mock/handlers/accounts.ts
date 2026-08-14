@@ -1,4 +1,8 @@
-import type { Account } from '#src/services/accounts/schema';
+import type { InferOutput } from 'valibot';
+
+import type { AccountSchema } from '#src/services/accounts/schema';
+
+export type Account = InferOutput<typeof AccountSchema>;
 
 export const MOCK_ROTH_IRA_ACCOUNT: Account = {
   id: '11111111-1111-4111-8111-111111111111',

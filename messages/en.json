@@ -1,0 +1,21 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "dashboard_title": "Dashboard",
+  "expenses_title": "Expenses",
+  "income_title": "Income",
+  "investments_title": "Investments",
+  "settings_accounts_archive": "Archive",
+  "settings_accounts_category_label": "Category",
+  "settings_accounts_description": "Investment and cash accounts used across the Investments log and dashboard.",
+  "settings_accounts_name_label": "Name",
+  "settings_accounts_name_placeholder": "e.g. Roth IRA",
+  "settings_accounts_show_archived": "Show archived",
+  "settings_accounts_submit": "Add account",
+  "settings_accounts_table_actions": "Actions",
+  "settings_accounts_table_category": "Category",
+  "settings_accounts_table_name": "Name",
+  "settings_accounts_title": "Accounts",
+  "settings_categories_title": "Categories",
+  "settings_import_export_title": "Import / Export",
+  "settings_income_types_title": "Income Types"
+}

@@ -8,10 +8,6 @@ export const IncomeEntrySchema = v.object({
   typeId: v.pipe(v.string(), v.uuid()),
 });
 
-export type IncomeEntry = v.InferOutput<typeof IncomeEntrySchema>;
-
 export const IncomeEntryListSchema = v.array(IncomeEntrySchema);
 
 export const IncomeEntryInputSchema = v.omit(IncomeEntrySchema, ['id']);
-
-export type IncomeEntryInput = v.InferOutput<typeof IncomeEntryInputSchema>;

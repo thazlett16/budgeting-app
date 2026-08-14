@@ -1,6 +1,8 @@
 import { mutationOptions, queryOptions } from '@tanstack/react-query';
 
-import type { LookupItemInput } from '#src/services/lookups/schema';
+import type { InferInput } from 'valibot';
+
+import type { LookupItemInputSchema, LookupItemSchema } from '#src/services/lookups/schema';
 
 import { expenseCategoriesClient } from './client';
 
@@ -15,14 +17,15 @@ export const expenseCategoriesOptions = {
     }),
 
   createExpenseCategoryMutationOptions: mutationOptions({
-    mutationFn: async (input: LookupItemInput) => await expenseCategoriesClient.createExpenseCategory(input),
+    mutationFn: async (input: InferInput<typeof LookupItemInputSchema>) =>
+      await expenseCategoriesClient.createExpenseCategory(input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
       await client.invalidateQueries({ queryKey: expenseCategoriesOptions.serviceEntity() });
     },
   }),
 
   updateExpenseCategoryMutationOptions: mutationOptions({
-    mutationFn: async ({ id, input }: { id: string; input: LookupItemInput }) =>
+    mutationFn: async ({ id, ...input }: InferInput<typeof LookupItemSchema>) =>
       await expenseCategoriesClient.updateExpenseCategory(id, input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
       await client.invalidateQueries({ queryKey: expenseCategoriesOptions.serviceEntity() });

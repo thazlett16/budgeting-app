@@ -9,6 +9,8 @@ import { devtools } from '@tanstack/devtools-vite';
 import { oxfmtConfig } from '@thaz/oxfmt-config';
 import { nativeConfig, routesFileConfig } from '@thaz/oxlint-config';
 
+import { paraglideVitePlugin } from '@inlang/paraglide-js';
+
 export default defineConfig(({ mode }) => {
   // Tauri expects a fixed dev server port and needs to ignore src-tauri in
   // its file watcher; see https://v2.tauri.app/start/frontend/vite/
@@ -51,6 +53,14 @@ export default defineConfig(({ mode }) => {
       tsconfigPaths: true,
     },
     plugins: [
+      paraglideVitePlugin({
+        project: './project.inlang',
+        outdir: './src/paraglide',
+        emitTsDeclarations: true,
+        emitPrettierIgnore: false,
+        // Single-locale for now (English only) — no locale negotiation needed.
+        strategy: ['baseLocale'],
+      }),
       devtools(),
       tanstackRouter({
         target: 'react',
@@ -84,7 +94,7 @@ export default defineConfig(({ mode }) => {
         typeAware: true,
         typeCheck: true,
       },
-      ignorePatterns: ['src/route-tree.gen.ts'],
+      ignorePatterns: ['src/route-tree.gen.ts', 'src/paraglide/**'],
       // jsPlugins: jsPluginConfig.jsPlugins,
       // rules: {
       //   ...jsPluginConfig.rules,
@@ -113,7 +123,7 @@ export default defineConfig(({ mode }) => {
       coverage: {
         enabled: true,
         include: ['src/**/*.{ts,tsx}'],
-        exclude: ['src/route-tree.gen.ts', 'src/main.tsx', 'src/routes/**'],
+        exclude: ['src/route-tree.gen.ts', 'src/main.tsx', 'src/routes/**', 'src/paraglide/**'],
         provider: 'istanbul',
       },
       projects: [

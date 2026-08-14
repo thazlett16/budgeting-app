@@ -1,6 +1,10 @@
-import type { IncomeEntry } from '#src/services/income/schema';
+import type { InferOutput } from 'valibot';
+
+import type { IncomeEntrySchema } from '#src/services/income/schema';
 
 import { MOCK_W2_INCOME_TYPE } from './lookups';
+
+type IncomeEntry = InferOutput<typeof IncomeEntrySchema>;
 
 export const MOCK_INCOME: IncomeEntry[] = [
   {

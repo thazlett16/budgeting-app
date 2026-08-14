@@ -1,6 +1,10 @@
-import type { InvestmentEntry } from '#src/services/investments/schema';
+import type { InferOutput } from 'valibot';
+
+import type { InvestmentEntrySchema } from '#src/services/investments/schema';
 
 import { MOCK_ROTH_IRA_ACCOUNT } from './accounts';
+
+type InvestmentEntry = InferOutput<typeof InvestmentEntrySchema>;
 
 export const MOCK_INVESTMENT_ENTRIES: InvestmentEntry[] = [
   {

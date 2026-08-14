@@ -1,6 +1,7 @@
 blockExoticSubdeps: true
 
 catalog:
+  '@inlang/paraglide-js': 2.23.2
   '@internationalized/date': 3.12.3
   '@js-temporal/polyfill': 0.5.1
   '@tailwindcss/vite': 4.3.3

@@ -1,1 +1,44 @@
 @import 'tailwindcss';
+
+/*
+ * Minimal token set — just enough for the Button/table/form primitives
+ * built so far. Expand as more components need colors, following the same
+ * `--color-<name>` / `--color-<name>-hover` / `--color-<name>-foreground`
+ * naming ui-starter's component library uses.
+ */
+@theme {
+  --color-background: oklch(100% 0 0);
+  --color-foreground: oklch(20% 0 0);
+
+  --color-primary: oklch(45% 0.18 265);
+  --color-primary-hover: oklch(40% 0.18 265);
+  --color-primary-foreground: oklch(98% 0 0);
+
+  --color-danger: oklch(55% 0.22 25);
+  --color-danger-hover: oklch(48% 0.22 25);
+  --color-danger-foreground: oklch(98% 0 0);
+
+  --color-muted: oklch(96% 0 0);
+  --color-muted-hover: oklch(92% 0 0);
+  --color-muted-foreground: oklch(45% 0 0);
+
+  --color-border: oklch(90% 0 0);
+}
+
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-background: oklch(18% 0 0);
+    --color-foreground: oklch(95% 0 0);
+
+    --color-muted: oklch(26% 0 0);
+    --color-muted-hover: oklch(32% 0 0);
+    --color-muted-foreground: oklch(70% 0 0);
+
+    --color-border: oklch(32% 0 0);
+  }
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}

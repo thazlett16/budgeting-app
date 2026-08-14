@@ -1,7 +1,9 @@
 import { mutationOptions, queryOptions } from '@tanstack/react-query';
 
-import type { ExpenseEntryInput } from './schema';
+import type { InferInput } from 'valibot';
+
 import { expensesClient } from './client';
+import { ExpenseEntrySchema, ExpenseEntryInputSchema } from './schema';
 
 export const expensesOptions = {
   serviceEntity: () => ['expenses'] as const,
@@ -14,14 +16,14 @@ export const expensesOptions = {
     }),
 
   createExpenseMutationOptions: mutationOptions({
-    mutationFn: async (input: ExpenseEntryInput) => await expensesClient.createExpense(input),
+    mutationFn: async (input: InferInput<typeof ExpenseEntryInputSchema>) => await expensesClient.createExpense(input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
       await client.invalidateQueries({ queryKey: expensesOptions.serviceEntity() });
     },
   }),
 
   updateExpenseMutationOptions: mutationOptions({
-    mutationFn: async ({ id, input }: { id: string; input: ExpenseEntryInput }) =>
+    mutationFn: async ({ id, ...input }: InferInput<typeof ExpenseEntrySchema>) =>
       await expensesClient.updateExpense(id, input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
       await client.invalidateQueries({ queryKey: expensesOptions.serviceEntity() });

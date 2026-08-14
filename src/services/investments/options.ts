@@ -1,6 +1,8 @@
 import { mutationOptions, queryOptions } from '@tanstack/react-query';
 
-import type { InvestmentEntryInput } from './schema';
+import type { InferInput } from 'valibot';
+
+import type { InvestmentEntryInputSchema, InvestmentEntrySchema } from './schema';
 import { investmentsClient } from './client';
 
 export const investmentsOptions = {
@@ -14,14 +16,15 @@ export const investmentsOptions = {
     }),
 
   createInvestmentEntryMutationOptions: mutationOptions({
-    mutationFn: async (input: InvestmentEntryInput) => await investmentsClient.createInvestmentEntry(input),
+    mutationFn: async (input: InferInput<typeof InvestmentEntryInputSchema>) =>
+      await investmentsClient.createInvestmentEntry(input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
       await client.invalidateQueries({ queryKey: investmentsOptions.serviceEntity() });
     },
   }),
 
   updateInvestmentEntryMutationOptions: mutationOptions({
-    mutationFn: async ({ id, input }: { id: string; input: InvestmentEntryInput }) =>
+    mutationFn: async ({ id, ...input }: InferInput<typeof InvestmentEntrySchema>) =>
       await investmentsClient.updateInvestmentEntry(id, input),
     onSuccess: async (_data, _variables, _onMutateResult, { client }) => {
       await client.invalidateQueries({ queryKey: investmentsOptions.serviceEntity() });

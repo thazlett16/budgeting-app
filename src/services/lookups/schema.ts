@@ -13,10 +13,6 @@ export const LookupItemSchema = v.object({
   sortOrder: v.pipe(v.number(), v.integer()),
 });
 
-export type LookupItem = v.InferOutput<typeof LookupItemSchema>;
-
 export const LookupItemListSchema = v.array(LookupItemSchema);
 
 export const LookupItemInputSchema = v.omit(LookupItemSchema, ['id']);
-
-export type LookupItemInput = v.InferOutput<typeof LookupItemInputSchema>;

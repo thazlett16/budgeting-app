@@ -1,6 +1,10 @@
-import type { ExpenseEntry } from '#src/services/expenses/schema';
+import type { InferOutput } from 'valibot';
+
+import type { ExpenseEntrySchema } from '#src/services/expenses/schema';
 
 import { MOCK_GROCERIES_CATEGORY, MOCK_HOUSING_CATEGORY } from './lookups';
+
+type ExpenseEntry = InferOutput<typeof ExpenseEntrySchema>;
 
 export const MOCK_EXPENSES: ExpenseEntry[] = [
   {

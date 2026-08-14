@@ -8,10 +8,6 @@ export const ExpenseEntrySchema = v.object({
   categoryId: v.pipe(v.string(), v.uuid()),
 });
 
-export type ExpenseEntry = v.InferOutput<typeof ExpenseEntrySchema>;
-
 export const ExpenseEntryListSchema = v.array(ExpenseEntrySchema);
 
 export const ExpenseEntryInputSchema = v.omit(ExpenseEntrySchema, ['id']);
-
-export type ExpenseEntryInput = v.InferOutput<typeof ExpenseEntryInputSchema>;
