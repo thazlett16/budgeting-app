@@ -1,10 +1,11 @@
+use jiff::civil::Date;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct IncomeEntry {
     pub id: String,
-    pub date: String,
+    pub date: Date,
     pub description: String,
     pub amount: f64,
     pub type_id: String,
@@ -13,7 +14,7 @@ pub struct IncomeEntry {
 #[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct IncomeEntryInput {
-    pub date: String,
+    pub date: Date,
     pub description: String,
     pub amount: f64,
     pub type_id: String,

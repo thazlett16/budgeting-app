@@ -46,6 +46,11 @@ pub fn run() {
             commands::income::create_income,
             commands::income::update_income,
             commands::income::delete_income,
+            commands::summary::get_investment_gains,
+            commands::summary::get_net_worth_by_month,
+            commands::summary::get_spending_by_category,
+            commands::summary::get_income_by_type,
+            commands::summary::get_dashboard_insights,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -1,3 +1,4 @@
+use jiff::civil::Date;
 use serde::{Deserialize, Serialize};
 
 /// Gain $ / gain % are never stored here — they're derived from the
@@ -6,7 +7,7 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "snake_case")]
 pub struct InvestmentEntry {
     pub id: String,
-    pub date: String,
+    pub date: Date,
     pub account_id: String,
     pub balance: f64,
     pub contribution: f64,
@@ -15,7 +16,7 @@ pub struct InvestmentEntry {
 #[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub struct InvestmentEntryInput {
-    pub date: String,
+    pub date: Date,
     pub account_id: String,
     pub balance: f64,
     pub contribution: f64,

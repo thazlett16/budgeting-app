@@ -211,9 +211,9 @@ dependencies = [
 name = "budgeting-app"
 version = "0.1.0"
 dependencies = [
- "chrono",
  "csv",
  "genpdf",
+ "jiff",
  "rust_xlsxwriter",
  "serde",
  "serde_json",
