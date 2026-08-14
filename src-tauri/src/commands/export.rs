@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use pdf_writer::{Content, Finish, Name, Pdf, Rect, Ref, Str};
 use rust_xlsxwriter::{Format, Workbook};
 use tauri::AppHandle;
 use tauri_plugin_dialog::DialogExt;
@@ -18,7 +19,7 @@ use super::investments::list_investment_entries;
 use super::lookups::{list_expense_categories, list_income_types};
 use super::summary::{
     compute_investment_gains, compute_spending_by_category, get_dashboard_insights, get_income_by_type,
-    get_net_worth_by_month,
+    get_net_worth_by_month, DashboardInsights,
 };
 
 fn name_lookup(items: Vec<LookupItem>) -> HashMap<String, String> {
@@ -35,7 +36,7 @@ fn account_name_lookup(app: &AppHandle) -> AppResult<HashMap<String, String>> {
 /// `content` there. Returns the chosen path, or `None` if the user
 /// cancelled — the frontend distinguishes "cancelled" from "wrote nothing"
 /// this way instead of treating a cancel as an error.
-fn save_via_dialog(app: &AppHandle, file_name: &str, extension: &str, content: &str) -> AppResult<Option<String>> {
+pub(crate) fn save_via_dialog(app: &AppHandle, file_name: &str, extension: &str, content: &str) -> AppResult<Option<String>> {
     let Some(file_path) = app
         .dialog()
         .file()
@@ -428,4 +429,251 @@ pub async fn export_xlsx(app: AppHandle, range: DateRange) -> AppResult<Option<S
     let bytes = build_workbook(&app, range)?;
 
     save_bytes_via_dialog(&app, "budget-export.xlsx", "xlsx", &bytes)
+}
+
+const PDF_PAGE_WIDTH: f32 = 595.0;
+const PDF_PAGE_HEIGHT: f32 = 842.0;
+const PDF_MARGIN_LEFT: f32 = 56.0;
+
+fn format_currency(value: f64) -> String {
+    let is_negative = value < 0.0;
+    let cents = (value.abs() * 100.0).round() as i64;
+    let dollars = group_thousands(cents / 100);
+    let remainder = cents % 100;
+    let sign = if is_negative { "-" } else { "" };
+
+    format!("{sign}${dollars}.{remainder:02}")
+}
+
+fn group_thousands(value: i64) -> String {
+    let digits = value.to_string();
+    let len = digits.len();
+    let mut grouped = String::new();
+
+    for (index, digit) in digits.chars().enumerate() {
+        if index > 0 && (len - index) % 3 == 0 {
+            grouped.push(',');
+        }
+
+        grouped.push(digit);
+    }
+
+    grouped
+}
+
+fn format_optional_currency(value: Option<f64>) -> String {
+    match value {
+        Some(value) => format_currency(value),
+        None => "n/a".to_string(),
+    }
+}
+
+fn format_percent(value: Option<f64>) -> String {
+    match value {
+        Some(value) => format!("{:.1}%", value * 100.0),
+        None => "n/a".to_string(),
+    }
+}
+
+fn format_months(value: Option<f64>) -> String {
+    match value {
+        Some(value) => format!("{value:.1} months"),
+        None => "n/a".to_string(),
+    }
+}
+
+fn write_pdf_line(content: &mut Content, font: Name, size: f32, y: f32, text: &str) {
+    content.begin_text();
+    content.set_font(font, size);
+    content.next_line(PDF_MARGIN_LEFT, y);
+    content.show(Str(text.as_bytes()));
+    content.end_text();
+}
+
+fn write_pdf_section(
+    content: &mut Content,
+    bold_font: Name,
+    regular_font: Name,
+    mut y: f32,
+    title: &str,
+    rows: &[(&str, String)],
+) -> f32 {
+    write_pdf_line(content, bold_font, 13.0, y, title);
+    y -= 18.0;
+
+    for (label, value) in rows {
+        let line = if value.is_empty() { (*label).to_string() } else { format!("{label}: {value}") };
+
+        write_pdf_line(content, regular_font, 11.0, y, &line);
+        y -= 15.0;
+    }
+
+    y - 12.0
+}
+
+/// Builds a single-page PDF summary — the same content as the Dashboard for
+/// the given range, laid out with hardcoded coordinates rather than
+/// automatic text flow (the report is short and fixed-shape enough that
+/// manual layout is simpler than pulling in a flowing-text engine).
+fn build_pdf_summary(
+    range: DateRange,
+    current_net_worth: Option<f64>,
+    insights: &DashboardInsights,
+    total_gain: f64,
+    spending_rows: &[(String, f64)],
+    categories: &HashMap<String, String>,
+) -> Vec<u8> {
+    let catalog_id = Ref::new(1);
+    let page_tree_id = Ref::new(2);
+    let page_id = Ref::new(3);
+    let regular_font_id = Ref::new(4);
+    let bold_font_id = Ref::new(5);
+    let content_id = Ref::new(6);
+
+    let regular_name = Name(b"F1");
+    let bold_name = Name(b"F2");
+
+    let mut pdf = Pdf::new();
+    pdf.catalog(catalog_id).pages(page_tree_id);
+    pdf.pages(page_tree_id).kids([page_id]).count(1);
+
+    let mut page = pdf.page(page_id);
+    page.media_box(Rect::new(0.0, 0.0, PDF_PAGE_WIDTH, PDF_PAGE_HEIGHT));
+    page.parent(page_tree_id);
+    page.contents(content_id);
+    {
+        let mut resources = page.resources();
+        let mut fonts = resources.fonts();
+        fonts.pair(regular_name, regular_font_id);
+        fonts.pair(bold_name, bold_font_id);
+    }
+    page.finish();
+
+    pdf.type1_font(regular_font_id).base_font(Name(b"Helvetica"));
+    pdf.type1_font(bold_font_id).base_font(Name(b"Helvetica-Bold"));
+
+    let mut content = Content::new();
+    let mut y = PDF_PAGE_HEIGHT - 72.0;
+
+    write_pdf_line(&mut content, bold_name, 18.0, y, "Budget & Net Worth Summary");
+    y -= 22.0;
+    write_pdf_line(&mut content, regular_name, 11.0, y, &format!("Report period: {} to {}", range.start, range.end));
+    y -= 24.0;
+
+    y = write_pdf_section(
+        &mut content,
+        bold_name,
+        regular_name,
+        y,
+        "Net Worth",
+        &[
+            ("Current Net Worth", format_optional_currency(current_net_worth)),
+            ("Net Worth Change", format_optional_currency(insights.net_worth_change)),
+        ],
+    );
+
+    y = write_pdf_section(
+        &mut content,
+        bold_name,
+        regular_name,
+        y,
+        "Investment Gains",
+        &[
+            ("Total Contributions", format_currency(insights.total_contributions)),
+            ("Total Gain", format_currency(total_gain)),
+        ],
+    );
+
+    y = write_pdf_section(
+        &mut content,
+        bold_name,
+        regular_name,
+        y,
+        "Cash Flow",
+        &[
+            ("Net Cash Flow", format_currency(insights.net_cash_flow)),
+            ("Savings Rate", format_percent(insights.savings_rate)),
+            ("Emergency Fund Runway", format_months(insights.emergency_fund_runway_months)),
+        ],
+    );
+
+    let named_spending_rows: Vec<(String, String)> = spending_rows
+        .iter()
+        .take(8)
+        .map(|(category_id, total)| {
+            let name = categories.get(category_id).cloned().unwrap_or_else(|| category_id.clone());
+            (name, format_currency(*total))
+        })
+        .collect();
+
+    let spending_section_rows: Vec<(&str, String)> = if named_spending_rows.is_empty() {
+        vec![("No expenses in range", String::new())]
+    } else {
+        named_spending_rows.iter().map(|(name, total)| (name.as_str(), total.clone())).collect()
+    };
+
+    write_pdf_section(&mut content, bold_name, regular_name, y, "Spending by Category", &spending_section_rows);
+
+    write_pdf_line(
+        &mut content,
+        regular_name,
+        9.0,
+        56.0,
+        &format!("Snapshot generated {} — computed values, not a live report.", jiff::Zoned::now().date()),
+    );
+
+    pdf.stream(content_id, &content.finish());
+
+    pdf.finish()
+}
+
+#[tauri::command(rename_all = "snake_case")]
+pub async fn export_pdf_summary(app: AppHandle, range: DateRange) -> AppResult<Option<String>> {
+    let categories = name_lookup(list_expense_categories(app.clone())?);
+    let insights = get_dashboard_insights(app.clone(), range)?;
+    let net_worth_months = get_net_worth_by_month(app.clone(), range)?;
+    let account_gains = compute_investment_gains(list_investment_entries(app.clone())?, range);
+    let spending_totals = sum_by_id(
+        &compute_spending_by_category(list_expenses(app.clone())?, range)
+            .into_iter()
+            .map(|row| (row.category_id, row.total))
+            .collect::<Vec<_>>(),
+    );
+
+    let current_net_worth = net_worth_months.last().map(|row| row.net_worth);
+    let total_gain: f64 = account_gains.iter().filter_map(|row| row.gain_dollar).sum();
+
+    let bytes = build_pdf_summary(range, current_net_worth, &insights, total_gain, &spending_totals, &categories);
+
+    save_bytes_via_dialog(&app, "budget-summary.pdf", "pdf", &bytes)
+}
+
+#[cfg(test)]
+mod pdf_tests {
+    use super::*;
+
+    #[test]
+    fn format_currency_groups_thousands_and_handles_negatives() {
+        assert_eq!(format_currency(1234.5), "$1,234.50");
+        assert_eq!(format_currency(-1234.5), "-$1,234.50");
+        assert_eq!(format_currency(0.0), "$0.00");
+    }
+
+    #[test]
+    fn build_pdf_summary_produces_a_valid_pdf_header() {
+        let range = DateRange { start: "2026-01-01".parse().unwrap(), end: "2026-12-31".parse().unwrap() };
+        let insights = DashboardInsights {
+            net_cash_flow: 100.0,
+            total_contributions: 200.0,
+            savings_rate: Some(0.1),
+            net_worth_change: Some(300.0),
+            emergency_fund_runway_months: Some(6.0),
+            top_spending_category_id: None,
+        };
+
+        let bytes = build_pdf_summary(range, Some(1000.0), &insights, 50.0, &[], &HashMap::new());
+
+        assert!(bytes.starts_with(b"%PDF-"));
+        assert!(bytes.ends_with(b"%%EOF\n") || bytes.ends_with(b"%%EOF"));
+    }
 }

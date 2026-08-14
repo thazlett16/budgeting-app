@@ -22,9 +22,9 @@ serde_json = "1"
 csv = "1"
 uuid = { version = "1", features = ["v4", "serde"] }
 rust_xlsxwriter = "0.79"
-genpdf = "0.2"
 thiserror = "2"
 jiff = { version = "0.2.35", features = ["serde"] }
+pdf-writer = "0.15.0"
 
 [dev-dependencies]
 

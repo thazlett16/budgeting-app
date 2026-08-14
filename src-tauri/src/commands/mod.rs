@@ -2,6 +2,7 @@ pub mod accounts;
 pub mod backup;
 pub mod export;
 pub mod expenses;
+pub mod import;
 pub mod income;
 pub mod investments;
 pub mod lookups;

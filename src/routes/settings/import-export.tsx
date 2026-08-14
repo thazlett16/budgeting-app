@@ -11,6 +11,7 @@ import * as m from '#src/paraglide/messages';
 import { backupOptions } from '#src/services/backup/options';
 import { RestoreSummarySchema } from '#src/services/backup/schema';
 import { exportOptions } from '#src/services/export/options';
+import { importOptions } from '#src/services/import/options';
 
 export const Route = createFileRoute('/settings/import-export')({
   component: SettingsImportExportPage,
@@ -38,6 +39,26 @@ function restoreStatusMessage(summary: InferOutput<typeof RestoreSummarySchema> 
     summary.income;
 
   return m.settings_import_export_restore_success({ count: total });
+}
+
+function uploadStatusMessage(count: number | null) {
+  if (count === null) {
+    return m.settings_import_export_lookups_upload_cancelled();
+  }
+
+  return m.settings_import_export_lookups_upload_success({ count });
+}
+
+function uploadErrorMessage(error: unknown) {
+  if (error instanceof Error) {
+    return m.settings_import_export_lookups_upload_error({ message: error.message });
+  }
+
+  if (typeof error === 'object' && error !== null && 'message' in error && typeof error.message === 'string') {
+    return m.settings_import_export_lookups_upload_error({ message: error.message });
+  }
+
+  return m.settings_import_export_lookups_upload_error({ message: String(error) });
 }
 
 function SettingsImportExportPage() {
@@ -68,6 +89,47 @@ function SettingsImportExportPage() {
     ...exportOptions.exportXlsxMutationOptions,
     onSuccess: (path) => {
       setStatusMessage(exportStatusMessage(path));
+    },
+  });
+
+  const exportPdfSummary = useMutation({
+    ...exportOptions.exportPdfSummaryMutationOptions,
+    onSuccess: (path) => {
+      setStatusMessage(exportStatusMessage(path));
+    },
+  });
+
+  const downloadExpenseCategoriesPreset = useMutation({
+    ...importOptions.downloadExpenseCategoriesPresetMutationOptions,
+    onSuccess: (path) => {
+      setStatusMessage(exportStatusMessage(path));
+    },
+  });
+
+  const downloadIncomeTypesPreset = useMutation({
+    ...importOptions.downloadIncomeTypesPresetMutationOptions,
+    onSuccess: (path) => {
+      setStatusMessage(exportStatusMessage(path));
+    },
+  });
+
+  const uploadExpenseCategories = useMutation({
+    ...importOptions.uploadExpenseCategoriesMutationOptions,
+    onSuccess: (count) => {
+      setStatusMessage(uploadStatusMessage(count));
+    },
+    onError: (error) => {
+      setStatusMessage(uploadErrorMessage(error));
+    },
+  });
+
+  const uploadIncomeTypes = useMutation({
+    ...importOptions.uploadIncomeTypesMutationOptions,
+    onSuccess: (count) => {
+      setStatusMessage(uploadStatusMessage(count));
+    },
+    onError: (error) => {
+      setStatusMessage(uploadErrorMessage(error));
     },
   });
 
@@ -131,9 +193,63 @@ function SettingsImportExportPage() {
           >
             {m.settings_import_export_export_xlsx()}
           </Button>
+
+          <Button
+            isDisabled={exportPdfSummary.isPending}
+            onPress={() => {
+              exportPdfSummary.mutate(trailingTwelveMonthsRange());
+            }}
+          >
+            {m.settings_import_export_export_pdf()}
+          </Button>
         </div>
 
         {statusMessage !== null && <p className="text-muted-foreground text-sm">{statusMessage}</p>}
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <h2 className="text-sm font-semibold">{m.settings_import_export_lookups_section_title()}</h2>
+        <p className="text-muted-foreground text-sm">{m.settings_import_export_lookups_description()}</p>
+
+        <div className="flex flex-wrap gap-3">
+          <Button
+            isDisabled={downloadExpenseCategoriesPreset.isPending}
+            onPress={() => {
+              downloadExpenseCategoriesPreset.mutate();
+            }}
+          >
+            {m.settings_import_export_lookups_download_expense_categories()}
+          </Button>
+
+          <Button
+            isDisabled={downloadIncomeTypesPreset.isPending}
+            onPress={() => {
+              downloadIncomeTypesPreset.mutate();
+            }}
+          >
+            {m.settings_import_export_lookups_download_income_types()}
+          </Button>
+
+          <Button
+            variant="danger"
+            isDisabled={uploadExpenseCategories.isPending}
+            onPress={() => {
+              uploadExpenseCategories.mutate();
+            }}
+          >
+            {m.settings_import_export_lookups_upload_expense_categories()}
+          </Button>
+
+          <Button
+            variant="danger"
+            isDisabled={uploadIncomeTypes.isPending}
+            onPress={() => {
+              uploadIncomeTypes.mutate();
+            }}
+          >
+            {m.settings_import_export_lookups_upload_income_types()}
+          </Button>
+        </div>
       </div>
 
       <div className="flex flex-col gap-3">

@@ -58,8 +58,13 @@ pub fn run() {
             commands::export::export_expenses_csv,
             commands::export::export_income_csv,
             commands::export::export_xlsx,
+            commands::export::export_pdf_summary,
             commands::backup::export_backup,
             commands::backup::import_backup,
+            commands::import::download_expense_categories_preset,
+            commands::import::download_income_types_preset,
+            commands::import::upload_expense_categories,
+            commands::import::upload_income_types,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

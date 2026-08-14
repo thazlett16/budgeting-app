@@ -24,7 +24,7 @@ pub fn data_file(app: &AppHandle, file_name: &str) -> AppResult<PathBuf> {
     Ok(data_dir(app)?.join(file_name))
 }
 
-const PRESET_EXPENSE_CATEGORIES: &[&str] = &[
+pub const PRESET_EXPENSE_CATEGORIES: &[&str] = &[
     "Housing",
     "Groceries",
     "Dining",
@@ -39,7 +39,7 @@ const PRESET_EXPENSE_CATEGORIES: &[&str] = &[
     "Other",
 ];
 
-const PRESET_INCOME_TYPES: &[&str] = &["W2", "Dividends", "Bonus", "Interest", "Other"];
+pub const PRESET_INCOME_TYPES: &[&str] = &["W2", "Dividends", "Bonus", "Interest", "Other"];
 
 /// Creates the data directory and seeds default lookup CSVs on first launch.
 /// `accounts.csv` is intentionally left unseeded — there's no sensible

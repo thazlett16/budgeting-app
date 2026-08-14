@@ -28,4 +28,9 @@ export const exportContract = {
     input: v.object({ range: DateRangeSchema }),
     output: v.nullable(v.string()),
   },
+  exportPdfSummary: {
+    command: 'export_pdf_summary',
+    input: v.object({ range: DateRangeSchema }),
+    output: v.nullable(v.string()),
+  },
 } as const;
