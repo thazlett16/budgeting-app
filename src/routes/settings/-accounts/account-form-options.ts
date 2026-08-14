@@ -21,5 +21,16 @@ export const accountFormOptions = formOptions.strictSchema({
     name: null,
     category: null,
   },
-  validators: [{ run: accountFormSchema, triggers: ['change', 'blur'] }],
+  validators: [
+    {
+      run: accountFormSchema,
+      triggers: [
+        'blur',
+        {
+          trigger: 'change',
+          when: ({ formApi }) => formApi.state.submissionAttempts > 0,
+        },
+      ],
+    },
+  ],
 });
