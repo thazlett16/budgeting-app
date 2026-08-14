@@ -5,6 +5,7 @@ use uuid::Uuid;
 
 use crate::error::AppResult;
 use crate::models::lookup_item::LookupItem;
+use crate::models::meta::{Meta, CURRENT_SCHEMA_VERSION};
 use crate::storage::csv_store;
 
 pub const ACCOUNTS_CSV: &str = "accounts.csv";
@@ -50,6 +51,22 @@ pub fn ensure_data_dir(app: &AppHandle) -> AppResult<()> {
 
     seed_lookup_presets(app, EXPENSE_CATEGORIES_CSV, PRESET_EXPENSE_CATEGORIES)?;
     seed_lookup_presets(app, INCOME_TYPES_CSV, PRESET_INCOME_TYPES)?;
+    seed_meta(app)?;
+
+    Ok(())
+}
+
+fn seed_meta(app: &AppHandle) -> AppResult<()> {
+    let path = data_file(app, META_JSON)?;
+
+    if path.exists() {
+        return Ok(());
+    }
+
+    let meta = Meta { schema_version: CURRENT_SCHEMA_VERSION };
+    let json = serde_json::to_string_pretty(&meta)?;
+
+    std::fs::write(path, json)?;
 
     Ok(())
 }

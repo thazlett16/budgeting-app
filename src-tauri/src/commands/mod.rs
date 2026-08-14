@@ -1,4 +1,5 @@
 pub mod accounts;
+pub mod backup;
 pub mod export;
 pub mod expenses;
 pub mod income;
