@@ -45,7 +45,7 @@ fn gain_percent(gain_dollar: f64, prior_balance: f64) -> Option<f64> {
     Some(gain_dollar / prior_balance)
 }
 
-fn compute_investment_gains(entries: Vec<InvestmentEntry>, range: DateRange) -> Vec<AccountMonthGain> {
+pub(crate) fn compute_investment_gains(entries: Vec<InvestmentEntry>, range: DateRange) -> Vec<AccountMonthGain> {
     let mut by_account: BTreeMap<String, Vec<InvestmentEntry>> = BTreeMap::new();
 
     for entry in entries {
@@ -151,7 +151,7 @@ pub struct CategoryMonthTotal {
     pub total: f64,
 }
 
-fn compute_spending_by_category(entries: Vec<ExpenseEntry>, range: DateRange) -> Vec<CategoryMonthTotal> {
+pub(crate) fn compute_spending_by_category(entries: Vec<ExpenseEntry>, range: DateRange) -> Vec<CategoryMonthTotal> {
     let mut totals: BTreeMap<(String, String), f64> = BTreeMap::new();
 
     for entry in entries {

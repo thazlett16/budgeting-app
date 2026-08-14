@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 
+import { trailingTwelveMonthsRange } from '#src/common/trailing-twelve-months-range';
 import * as m from '#src/paraglide/messages';
 import { accountsOptions } from '#src/services/accounts/options';
 import { expenseCategoriesOptions } from '#src/services/expenseCategories/options';
@@ -8,7 +9,6 @@ import { incomeTypesOptions } from '#src/services/incomeTypes/options';
 import { summaryOptions } from '#src/services/summary/options';
 
 import { AccountBalanceChart } from './-dashboard/account-balance-chart';
-import { trailingTwelveMonthsRange } from './-dashboard/date-range';
 import { IncomeByTypeChart } from './-dashboard/income-by-type-chart';
 import { NetWorthChart } from './-dashboard/net-worth-chart';
 import { SpendingByCategoryChart } from './-dashboard/spending-by-category-chart';

@@ -16,6 +16,9 @@ pub enum AppError {
 
     #[error("tauri error: {0}")]
     Tauri(#[from] tauri::Error),
+
+    #[error("xlsx error: {0}")]
+    Xlsx(#[from] rust_xlsxwriter::XlsxError),
 }
 
 // Tauri commands return errors as structured JSON to the frontend, not a
@@ -35,6 +38,7 @@ impl Serialize for AppError {
             AppError::Validation(_) => "validation",
             AppError::NotFound(_) => "not_found",
             AppError::Tauri(_) => "tauri",
+            AppError::Xlsx(_) => "xlsx",
         };
 
         state.serialize_field("kind", kind)?;
