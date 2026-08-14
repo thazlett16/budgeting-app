@@ -5,7 +5,7 @@ export const ExpenseEntrySchema = v.object({
   date: v.pipe(v.string(), v.isoDate()),
   description: v.pipe(v.string(), v.minLength(1), v.maxLength(200)),
   amount: v.pipe(v.number(), v.minValue(0)),
-  categoryId: v.pipe(v.string(), v.uuid()),
+  category_id: v.pipe(v.string(), v.uuid()),
 });
 
 export const ExpenseEntryListSchema = v.array(ExpenseEntrySchema);

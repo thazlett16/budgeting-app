@@ -10,7 +10,7 @@ export const LookupItemSchema = v.object({
   id: v.pipe(v.string(), v.uuid()),
   name: v.pipe(v.string(), v.minLength(1), v.maxLength(60)),
   archived: v.boolean(),
-  sortOrder: v.pipe(v.number(), v.integer()),
+  sort_order: v.pipe(v.number(), v.integer()),
 });
 
 export const LookupItemListSchema = v.array(LookupItemSchema);

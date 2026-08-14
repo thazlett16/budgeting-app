@@ -5,12 +5,12 @@ use crate::error::{AppError, AppResult};
 use crate::models::account::{Account, AccountInput};
 use crate::storage::{csv_store, paths};
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn list_accounts(app: AppHandle) -> AppResult<Vec<Account>> {
     csv_store::read_all(paths::data_file(&app, paths::ACCOUNTS_CSV)?)
 }
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn create_account(app: AppHandle, input: AccountInput) -> AppResult<Account> {
     let mut accounts = list_accounts(app.clone())?;
 
@@ -28,7 +28,7 @@ pub fn create_account(app: AppHandle, input: AccountInput) -> AppResult<Account>
     Ok(account)
 }
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn update_account(app: AppHandle, id: String, input: AccountInput) -> AppResult<Account> {
     let mut accounts = list_accounts(app.clone())?;
 
@@ -51,7 +51,7 @@ pub fn update_account(app: AppHandle, id: String, input: AccountInput) -> AppRes
 
 /// Accounts are soft-deleted — transaction rows in `investments.csv` may
 /// still reference the id, so history stays intact.
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn archive_account(app: AppHandle, id: String) -> AppResult<()> {
     let mut accounts = list_accounts(app.clone())?;
 

@@ -12,7 +12,7 @@ export const MOCK_INCOME: IncomeEntry[] = [
     date: '2026-08-01',
     description: 'Paycheck',
     amount: 4200,
-    typeId: MOCK_W2_INCOME_TYPE.id,
+    type_id: MOCK_W2_INCOME_TYPE.id,
   },
 ];
 

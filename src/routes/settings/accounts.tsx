@@ -32,7 +32,7 @@ function SettingsAccountsPage() {
         name: parsed.name,
         category: parsed.category,
         archived: false,
-        sortOrder: accountsQuery.data?.length ?? 0,
+        sort_order: accountsQuery.data?.length ?? 0,
       });
       formApi.reset();
     },

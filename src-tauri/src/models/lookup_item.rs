@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 /// — see `commands/lookups.rs`, which parameterizes on file path rather than
 /// duplicating this struct per domain.
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "snake_case")]
 pub struct LookupItem {
     pub id: String,
     pub name: String,
@@ -13,7 +13,7 @@ pub struct LookupItem {
 }
 
 #[derive(Debug, Clone, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "snake_case")]
 pub struct LookupItemInput {
     pub name: String,
     pub archived: bool,

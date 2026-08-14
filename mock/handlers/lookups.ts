@@ -8,14 +8,14 @@ export const MOCK_HOUSING_CATEGORY: LookupItem = {
   id: 'aaaaaaaa-1111-4111-8111-111111111111',
   name: 'Housing',
   archived: false,
-  sortOrder: 0,
+  sort_order: 0,
 };
 
 export const MOCK_GROCERIES_CATEGORY: LookupItem = {
   id: 'aaaaaaaa-2222-4222-8222-222222222222',
   name: 'Groceries',
   archived: false,
-  sortOrder: 1,
+  sort_order: 1,
 };
 
 export const MOCK_EXPENSE_CATEGORIES: LookupItem[] = [MOCK_HOUSING_CATEGORY, MOCK_GROCERIES_CATEGORY];
@@ -24,14 +24,14 @@ export const MOCK_W2_INCOME_TYPE: LookupItem = {
   id: 'bbbbbbbb-1111-4111-8111-111111111111',
   name: 'W2',
   archived: false,
-  sortOrder: 0,
+  sort_order: 0,
 };
 
 export const MOCK_DIVIDENDS_INCOME_TYPE: LookupItem = {
   id: 'bbbbbbbb-2222-4222-8222-222222222222',
   name: 'Dividends',
   archived: false,
-  sortOrder: 1,
+  sort_order: 1,
 };
 
 export const MOCK_INCOME_TYPES: LookupItem[] = [MOCK_W2_INCOME_TYPE, MOCK_DIVIDENDS_INCOME_TYPE];

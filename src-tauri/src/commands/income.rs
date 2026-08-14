@@ -5,12 +5,12 @@ use crate::error::{AppError, AppResult};
 use crate::models::income_entry::{IncomeEntry, IncomeEntryInput};
 use crate::storage::{csv_store, paths};
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn list_income(app: AppHandle) -> AppResult<Vec<IncomeEntry>> {
     csv_store::read_all(paths::data_file(&app, paths::INCOME_CSV)?)
 }
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn create_income(app: AppHandle, input: IncomeEntryInput) -> AppResult<IncomeEntry> {
     let mut entries = list_income(app.clone())?;
 
@@ -28,7 +28,7 @@ pub fn create_income(app: AppHandle, input: IncomeEntryInput) -> AppResult<Incom
     Ok(entry)
 }
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn update_income(app: AppHandle, id: String, input: IncomeEntryInput) -> AppResult<IncomeEntry> {
     let mut entries = list_income(app.clone())?;
 
@@ -49,7 +49,7 @@ pub fn update_income(app: AppHandle, id: String, input: IncomeEntryInput) -> App
     Ok(updated)
 }
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn delete_income(app: AppHandle, id: String) -> AppResult<()> {
     let mut entries = list_income(app.clone())?;
     let original_len = entries.len();

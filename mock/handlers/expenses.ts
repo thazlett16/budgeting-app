@@ -12,14 +12,14 @@ export const MOCK_EXPENSES: ExpenseEntry[] = [
     date: '2026-08-01',
     description: 'Rent',
     amount: 1800,
-    categoryId: MOCK_HOUSING_CATEGORY.id,
+    category_id: MOCK_HOUSING_CATEGORY.id,
   },
   {
     id: 'dddddddd-2222-4222-8222-222222222222',
     date: '2026-08-03',
     description: 'Groceries',
     amount: 120.5,
-    categoryId: MOCK_GROCERIES_CATEGORY.id,
+    category_id: MOCK_GROCERIES_CATEGORY.id,
   },
 ];
 

@@ -3,7 +3,7 @@ import * as v from 'valibot';
 export const InvestmentEntrySchema = v.object({
   id: v.pipe(v.string(), v.uuid()),
   date: v.pipe(v.string(), v.isoDate()),
-  accountId: v.pipe(v.string(), v.uuid()),
+  account_id: v.pipe(v.string(), v.uuid()),
   balance: v.number(),
   contribution: v.number(),
 });

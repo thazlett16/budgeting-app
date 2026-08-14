@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "identifier": "com.thazcollective.budgeting-app",
   "build": {
-    "beforeDevCommand": "pnpm dev",
-    "beforeBuildCommand": "pnpm build",
+    "beforeDevCommand": "vp run dev",
+    "beforeBuildCommand": "vp run build",
     "devUrl": "http://localhost:1420",
     "frontendDist": "../dist"
   },

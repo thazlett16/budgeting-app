@@ -9,7 +9,7 @@ export const MOCK_ROTH_IRA_ACCOUNT: Account = {
   name: 'Roth IRA',
   category: 'roth_ira',
   archived: false,
-  sortOrder: 0,
+  sort_order: 0,
 };
 
 export const MOCK_CHECKING_ACCOUNT: Account = {
@@ -17,7 +17,7 @@ export const MOCK_CHECKING_ACCOUNT: Account = {
   name: 'Checking',
   category: 'checking',
   archived: false,
-  sortOrder: 1,
+  sort_order: 1,
 };
 
 export const MOCK_ACCOUNTS: Account[] = [MOCK_ROTH_IRA_ACCOUNT, MOCK_CHECKING_ACCOUNT];

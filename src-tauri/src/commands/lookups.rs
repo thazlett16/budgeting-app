@@ -67,42 +67,42 @@ fn archive(app: &AppHandle, file_name: &str, id: String) -> AppResult<()> {
     Ok(())
 }
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn list_expense_categories(app: AppHandle) -> AppResult<Vec<LookupItem>> {
     list(&app, paths::EXPENSE_CATEGORIES_CSV)
 }
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn create_expense_category(app: AppHandle, input: LookupItemInput) -> AppResult<LookupItem> {
     create(&app, paths::EXPENSE_CATEGORIES_CSV, input)
 }
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn update_expense_category(app: AppHandle, id: String, input: LookupItemInput) -> AppResult<LookupItem> {
     update(&app, paths::EXPENSE_CATEGORIES_CSV, id, input)
 }
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn archive_expense_category(app: AppHandle, id: String) -> AppResult<()> {
     archive(&app, paths::EXPENSE_CATEGORIES_CSV, id)
 }
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn list_income_types(app: AppHandle) -> AppResult<Vec<LookupItem>> {
     list(&app, paths::INCOME_TYPES_CSV)
 }
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn create_income_type(app: AppHandle, input: LookupItemInput) -> AppResult<LookupItem> {
     create(&app, paths::INCOME_TYPES_CSV, input)
 }
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn update_income_type(app: AppHandle, id: String, input: LookupItemInput) -> AppResult<LookupItem> {
     update(&app, paths::INCOME_TYPES_CSV, id, input)
 }
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn archive_income_type(app: AppHandle, id: String) -> AppResult<()> {
     archive(&app, paths::INCOME_TYPES_CSV, id)
 }

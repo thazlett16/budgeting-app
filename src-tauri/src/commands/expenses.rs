@@ -5,12 +5,12 @@ use crate::error::{AppError, AppResult};
 use crate::models::expense_entry::{ExpenseEntry, ExpenseEntryInput};
 use crate::storage::{csv_store, paths};
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn list_expenses(app: AppHandle) -> AppResult<Vec<ExpenseEntry>> {
     csv_store::read_all(paths::data_file(&app, paths::EXPENSES_CSV)?)
 }
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn create_expense(app: AppHandle, input: ExpenseEntryInput) -> AppResult<ExpenseEntry> {
     let mut entries = list_expenses(app.clone())?;
 
@@ -28,7 +28,7 @@ pub fn create_expense(app: AppHandle, input: ExpenseEntryInput) -> AppResult<Exp
     Ok(entry)
 }
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn update_expense(app: AppHandle, id: String, input: ExpenseEntryInput) -> AppResult<ExpenseEntry> {
     let mut entries = list_expenses(app.clone())?;
 
@@ -49,7 +49,7 @@ pub fn update_expense(app: AppHandle, id: String, input: ExpenseEntryInput) -> A
     Ok(updated)
 }
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn delete_expense(app: AppHandle, id: String) -> AppResult<()> {
     let mut entries = list_expenses(app.clone())?;
     let original_len = entries.len();

@@ -5,12 +5,12 @@ use crate::error::{AppError, AppResult};
 use crate::models::investment_entry::{InvestmentEntry, InvestmentEntryInput};
 use crate::storage::{csv_store, paths};
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn list_investment_entries(app: AppHandle) -> AppResult<Vec<InvestmentEntry>> {
     csv_store::read_all(paths::data_file(&app, paths::INVESTMENTS_CSV)?)
 }
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn create_investment_entry(app: AppHandle, input: InvestmentEntryInput) -> AppResult<InvestmentEntry> {
     let mut entries = list_investment_entries(app.clone())?;
 
@@ -28,7 +28,7 @@ pub fn create_investment_entry(app: AppHandle, input: InvestmentEntryInput) -> A
     Ok(entry)
 }
 
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn update_investment_entry(
     app: AppHandle,
     id: String,
@@ -55,7 +55,7 @@ pub fn update_investment_entry(
 
 /// Transaction rows are hard-deleted (unlike lookup items) — there's no
 /// history that needs to keep referencing a deleted snapshot.
-#[tauri::command]
+#[tauri::command(rename_all = "snake_case")]
 pub fn delete_investment_entry(app: AppHandle, id: String) -> AppResult<()> {
     let mut entries = list_investment_entries(app.clone())?;
     let original_len = entries.len();

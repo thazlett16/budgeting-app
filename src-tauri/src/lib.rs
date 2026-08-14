@@ -5,6 +5,15 @@ mod storage;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    // WebKitGTK's DMA-BUF renderer renders a blank window against the NVIDIA
+    // proprietary driver. Must be set before the webview initializes, so this
+    // covers dev and production builds alike, unlike the dev-only env var in
+    // package.json's `tauri:dev` script.
+    #[cfg(target_os = "linux")]
+    unsafe {
+        std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
+    }
+
     tauri::Builder::default()
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_dialog::init())
